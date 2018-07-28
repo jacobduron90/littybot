@@ -7,6 +7,7 @@ import com.litty.til.models.SlackEventType
 
 import io.javalin.Context
 import io.javalin.Javalin
+import org.slf4j.LoggerFactory
 
 
 val gson = Gson()
@@ -17,7 +18,9 @@ fun main(args: Array<String>) {
     }
 
     app.post("/slack/events") { ctx ->
-        println("got request ${ctx.body()}")
+        val logger = LoggerFactory.getLogger(SlackEventRequest::class.java)
+        logger.info("got request ${ctx.body()}")
+
         val baseModel = gson.fromJson<SlackEventRequest>(ctx.body(), SlackEventRequest::class.java)
         println(baseModel)
         requestRouter(baseModel, ctx)
