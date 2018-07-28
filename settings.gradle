@@ -1,0 +1,4 @@
+rootProject.name = 'littybot'
+include 'app'
+include 'models'
+

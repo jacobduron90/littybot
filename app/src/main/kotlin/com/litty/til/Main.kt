@@ -1,0 +1,33 @@
+package com.litty.til
+
+import com.google.gson.Gson
+import com.litty.til.models.SlackEventRequest
+
+import com.litty.til.models.SlackEventType
+
+import io.javalin.Context
+import io.javalin.Javalin
+
+
+val gson = Gson()
+fun main(args: Array<String>) {
+    val app = Javalin.start(7000)
+    app.get("/") { ctx ->
+        ctx.result("foo")
+    }
+
+    app.post("/slack/events") { ctx ->
+        val baseModel = gson.fromJson<SlackEventRequest>(ctx.body(), SlackEventRequest::class.java)
+        println(baseModel)
+        requestRouter(baseModel, ctx)
+    }
+}
+
+fun requestRouter(baseModel: SlackEventRequest, ctx: Context) {
+    ctx.header("Content type:", "application/json")
+    when(baseModel.type) {
+        SlackEventType.url_verification -> ResponseResolvers(baseModel, ctx, gson).apply {
+            onRequestReceived()
+        }
+    }
+}
