@@ -17,6 +17,7 @@ fun main(args: Array<String>) {
     }
 
     app.post("/slack/events") { ctx ->
+        println("got request ${ctx.body()}")
         val baseModel = gson.fromJson<SlackEventRequest>(ctx.body(), SlackEventRequest::class.java)
         println(baseModel)
         requestRouter(baseModel, ctx)
@@ -36,6 +37,10 @@ fun requestRouter(baseModel: SlackEventRequest, ctx: Context) {
     when(baseModel.type) {
         SlackEventType.url_verification -> ResponseResolvers(baseModel, ctx, gson).apply {
             onRequestReceived()
+        }
+        else -> {
+            println("printing base request ${baseModel}")
+            ctx.result("sure")
         }
     }
 }
