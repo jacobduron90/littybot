@@ -1,1 +1,1 @@
-web: ./gradlew run
+web: java -jar app/build/libs/app-*-SNAPSHOT.jar
