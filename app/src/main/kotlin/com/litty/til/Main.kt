@@ -11,7 +11,7 @@ import io.javalin.Javalin
 
 val gson = Gson()
 fun main(args: Array<String>) {
-    val app = Javalin.start(7000)
+    val app = Javalin.start(getHerokuAssignedPort())
     app.get("/") { ctx ->
         ctx.result("foo")
     }
@@ -21,6 +21,14 @@ fun main(args: Array<String>) {
         println(baseModel)
         requestRouter(baseModel, ctx)
     }
+}
+
+
+private fun getHerokuAssignedPort(): Int {
+    val processBuilder = ProcessBuilder()
+    return if (processBuilder.environment()["PORT"] != null) {
+        Integer.parseInt(processBuilder.environment()["PORT"])
+    } else 7000
 }
 
 fun requestRouter(baseModel: SlackEventRequest, ctx: Context) {
