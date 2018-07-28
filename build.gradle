@@ -17,6 +17,7 @@ group 'slack'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'kotlin'
+apply plugin: 'distribution'
 
 sourceCompatibility = 1.8
 
@@ -34,4 +35,9 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+task stage {
+    dependsOn installDist
+    println("hello")
 }
