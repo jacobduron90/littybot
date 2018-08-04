@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory
 
 
 val gson = Gson()
+val responseResolver = ResponseResolvers(gson)
+
 fun main(args: Array<String>) {
     val app = Javalin.start(getHerokuAssignedPort())
     app.get("/") { ctx ->
@@ -38,12 +40,14 @@ private fun getHerokuAssignedPort(): Int {
 fun requestRouter(baseModel: SlackEventRequest, ctx: Context) {
     ctx.header("Content type:", "application/json")
     when(baseModel.type) {
-        SlackEventType.url_verification -> ResponseResolvers(baseModel, ctx, gson).apply {
-            onRequestReceived()
+        SlackEventType.url_verification -> responseResolver.onUrlVerification(baseModel, ctx)
+        SlackEventType.event_callback -> {
+            when(baseModel.event.type) {
+                SlackEventType.message -> responseResolver.onNewMessage(baseModel, ctx)
+                SlackEventType.reaction_added -> responseResolver.onReactionAdded(baseModel, ctx)
+                else -> {}
+            }
         }
-        else -> {
-            println("printing base request ${baseModel}")
-            ctx.result("sure")
-        }
+        else -> {}
     }
 }
