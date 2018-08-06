@@ -9,3 +9,4 @@
 *.tab
 *.class
 */build
+*.jar
