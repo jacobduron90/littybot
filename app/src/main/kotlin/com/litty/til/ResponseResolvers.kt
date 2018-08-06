@@ -23,9 +23,7 @@ class ResponseResolvers(val gson: Gson) {
         println("got token from slack: ${token}")
         sendMessageToSlack(
                 message = "Yo, whassup. I saw your message ${message}",
-                room = channel,
-                token = token,
-                gson = gson
+                room = channel
         )
 
         context.status(200)
