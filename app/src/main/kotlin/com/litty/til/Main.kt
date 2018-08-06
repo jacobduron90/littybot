@@ -38,7 +38,7 @@ private fun getHerokuAssignedPort(): Int {
 }
 
 fun requestRouter(baseModel: SlackEventRequest, ctx: Context) {
-    ctx.header("Content type:", "application/json")
+    ctx.header("Content-type:", "application/json")
     when(baseModel.type) {
         SlackEventType.url_verification -> responseResolver.onUrlVerification(baseModel, ctx)
         SlackEventType.event_callback -> {
