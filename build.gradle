@@ -39,6 +39,5 @@ compileTestKotlin {
 }
 
 task stage {
-    dependsOn installDist,jar
-    println("hello")
+    dependsOn installDist,":app:jar"
 }
