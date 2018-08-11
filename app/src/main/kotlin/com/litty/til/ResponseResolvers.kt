@@ -21,13 +21,23 @@ class ResponseResolvers(val gson: Gson) {
         println("got channel from slack: ${channel}")
         val token = messageRequest.token
         println("got token from slack: ${token}")
-        sendMessageToSlack(
-                message = "Yo, whassup. I saw your message ${message}",
-                room = channel
-        )
+
+        if(importantMessage(message)) {
+            sendMessageToSlack(
+                    message = "Yo, whassup. I saw you calling me. I'll post this message to the TIL room.",
+                    room = channel
+            )
+        }
+
+
 
         context.status(200)
         context.result("message received")
+    }
+
+    private fun importantMessage(text: String): Boolean {
+        println("got message: $text")
+        return text.contains("TIL", true) && text.contains("littybot", true)
     }
 
     fun onReactionAdded(authRequest: SlackEventRequest, context: Context) {
