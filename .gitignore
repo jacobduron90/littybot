@@ -10,3 +10,4 @@
 *.class
 */build
 *.jar
+*.kotlin_module
