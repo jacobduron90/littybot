@@ -13,20 +13,26 @@ import org.slf4j.LoggerFactory
 val gson = Gson()
 val responseResolver = ResponseResolvers(gson)
 
+val firebaseClient = FirebaseClientImpl(gson)
+
 fun main(args: Array<String>) {
-    val app = Javalin.start(getHerokuAssignedPort())
-    app.get("/") { ctx ->
-        ctx.result("foo")
-    }
+//    val app = Javalin.start(getHerokuAssignedPort())
+//    app.get("/") { ctx ->
+//        ctx.result("foo")
+//    }
+//
+//    app.post("/slack/events") { ctx ->
+//        val logger = LoggerFactory.getLogger(SlackEventRequest::class.java)
+//        logger.info("got request ${ctx.body()}")
+//
+//        val baseModel = gson.fromJson<SlackEventRequest>(ctx.body(), SlackEventRequest::class.java)
+//        println(baseModel)
+//        requestRouter(baseModel, ctx)
+//    }
+    firebaseClient.registerListener("sldkf", "lsdkjf")
+    firebaseClient.registerListener("sldkf2", "lsdkjf2")
+    firebaseClient.getListeners()
 
-    app.post("/slack/events") { ctx ->
-        val logger = LoggerFactory.getLogger(SlackEventRequest::class.java)
-        logger.info("got request ${ctx.body()}")
-
-        val baseModel = gson.fromJson<SlackEventRequest>(ctx.body(), SlackEventRequest::class.java)
-        println(baseModel)
-        requestRouter(baseModel, ctx)
-    }
 }
 
 
